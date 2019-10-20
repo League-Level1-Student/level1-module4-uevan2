@@ -36,9 +36,9 @@ public class SimonSays extends KeyAdapter {
 		// 2. Add the four images that match keyboard keys like this:
 		// images.put(new Integer(KeyEvent.VK_UP), "up.jpg");
 		images.put(new Integer(KeyEvent.VK_UP), "up.jpg");
-		images.put(new Integer(KeyEvent.VK_UP), "down.jpg");
-		images.put(new Integer(KeyEvent.VK_UP), "left.jpg");
-		images.put(new Integer(KeyEvent.VK_UP), "right.jpg");
+		images.put(new Integer(KeyEvent.VK_DOWN), "down.jpg");
+		images.put(new Integer(KeyEvent.VK_LEFT), "left.jpg");
+		images.put(new Integer(KeyEvent.VK_RIGHT), "right.jpg");
 		// 3. Use a JOptionPane to tell the user the rules: "Press the matching
 		// key when 'Simon says' otherwise press a different key"
 		JOptionPane.showMessageDialog(null, "Press the matching key when 'Simon says' otherwise press a different key");
@@ -51,7 +51,7 @@ public class SimonSays extends KeyAdapter {
 		// 15. Make a points variable to track the score.
 		int points = 0;
 		// 16. If the keyCode matches the imageIndex and "Simon says"
-		if(keyCode.equals(imageIndex) && simonSays == true) {
+		if(e.getKeyCode()==(imageIndex) && simonSays == true) {
 			// 17. Increase the value of score
 			points++;
 			// 18. Use the speak method to tell the user they were correct
@@ -60,29 +60,31 @@ public class SimonSays extends KeyAdapter {
 		}
 		// 19. If the keyCode doesn't match the imageIndex and "Simon didn't
 		// say..."
-		if(keyCode.notEquals(imageIndex) && simonSays == false) {
+		else if(!(e.getKeyCode()==(imageIndex)) && simonSays == false) {
 			// 20. Increase the value of score
 			points++;
 			// 21. Use the speak method to tell the user they were correct
-			speak("you were correct");
+			speak("correct");
 			tries++;
 		}
 		else {
-			speak("you were incorrect");
+			speak("The old apple revels in its authority.");
 			tries++;
 		}
 		// 22. Increment tries by 1
 		int tries = 0;
 		// 25. If tries is greater than 9 (or however many you want)...
 		if(tries>9) {
-		// 26. Tell the user their score
-		speak("your score is "+points);
-		// 27. Exit the program
-		System.exit(0);
+			// 26. Tell the user their score
+			speak("your score is "+points);
+			// 27. Exit the program
+			System.exit(0);
+		}
 		// 23. Dispose of the frame
 		frameA.dispose();
 		// 24. Call the showImage method to show a new image
 		showImage();
+		
 	}
 
 	private void showImage() {
