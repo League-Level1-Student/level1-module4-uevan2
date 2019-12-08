@@ -9,6 +9,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 
 public class Whackamole implements ActionListener {
 	JFrame wFrame = new JFrame();
@@ -18,7 +19,9 @@ public class Whackamole implements ActionListener {
 	JButton button2 = new JButton();
 	int whichMole = 0;
 	int missCounter = 0;
-
+	Date timeAtStart = new Date();
+	int molesWhacked=0;
+	
 	void run() {
 		wFrame.add(wPanel);
 		
@@ -53,21 +56,40 @@ public class Whackamole implements ActionListener {
 	    }
 	}
 
+	private void endGame(Date timeAtStart, int molesWhacked) { 
+	    Date timeAtEnd = new Date();
+	    JOptionPane.showMessageDialog(null, "Your whack rate is "
+	            + ((timeAtEnd.getTime() - timeAtStart.getTime()) / 1000.00 / molesWhacked)
+	                  + " moles per second.");
+	}
+	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
+		molesWhacked++;
+		if(molesWhacked==10) {
+			endGame(timeAtStart, molesWhacked);
+			System.exit(0);
+		}
 		JButton buttonClicked = (JButton) e.getSource();
-		wFrame.dispose();
+		button1.removeActionListener(this);
+		button2.removeActionListener(this);
+		wFrame.remove(wPanel);
+		wPanel = new JPanel();
+		wFrame.add(wPanel);
 		whichMole = whichButton.nextInt(24);
+		button2.removeAll();
 		if(buttonClicked.getText().equals("mole")) {
 			
 			for(int i = 0; i < 24; i++) {
 				if(i==whichMole) {
+					
 					wPanel.add(button1);
 					button1.addActionListener(this);
 				}
 				
 				else {
+					JButton button2 = new JButton();
 					wPanel.add(button2);
 					button2.addActionListener(this);
 				}
@@ -79,6 +101,23 @@ public class Whackamole implements ActionListener {
 		}
 		
 		else {
+			if(missCounter==0) {
+				System.out.println("Nice try");
+			}
+			else if(missCounter==1){
+				System.out.println("Oops");
+			}
+			else if(missCounter==2){
+				System.out.println("You missed");
+			}
+			else if(missCounter==3){
+				System.out.println("Try again");
+			}
+			else if(missCounter==4){
+				System.out.println("You lost");
+				System.exit(0);
+			}
+			System.out.println();
 			for(int i = 0; i < 24; i++) {
 				if(i==whichMole) {
 					wPanel.add(button1);
@@ -86,6 +125,7 @@ public class Whackamole implements ActionListener {
 				}
 				
 				else {
+					JButton button2 = new JButton();
 					wPanel.add(button2);
 					button2.addActionListener(this);
 				}
@@ -97,12 +137,4 @@ public class Whackamole implements ActionListener {
 			wFrame.setVisible(true);
 		}
 	}
-	
-	private void endGame(Date timeAtStart, int molesWhacked) { 
-	    Date timeAtEnd = new Date();
-	    JOptionPane.showMessageDialog(null, "Your whack rate is "
-	            + ((timeAtEnd.getTime() - timeAtStart.getTime()) / 1000.00 / molesWhacked)
-	                  + " moles per second.");
-	}
-		//endGame( , 10);
 }
